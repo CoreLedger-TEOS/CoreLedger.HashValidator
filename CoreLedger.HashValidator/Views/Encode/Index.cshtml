@@ -1,0 +1,33 @@
+﻿@model EncodedViewModel
+@{
+	ViewData["Title"] = "Hash Checker";
+}
+<div class="text-center">
+	<div class="tx-profile__container">
+		<div class="tx-profile__content-container full-width">
+			<form class="tx-profile__form js-form" method="post" autocomplete="off">
+				<label asp-for="EncodedData" class="display_label"></label>
+				<div class="input js-input">
+					<div class="input__inner">
+						<textarea asp-for="EncodedData" class="input-border js-input input__field js-input-field" rows="18"> </textarea>
+						<label class="input__label js-input-label">Type of paste here</label>
+					</div>
+					<span asp-validation-for="EncodedData" class="text-danger text_danger_label" style="white-space:pre-wrap"></span>
+				</div>
+				<div class="input">
+					<div class="form-group">
+						<label asp-for="DocumentHash" class="display_label"></label>
+						<input asp-for="DocumentHash" type="text" class="form-control input-border">
+					</div>
+					<span asp-validation-for="DocumentHash" class="text-danger text_danger_label" style="white-space:pre-wrap"></span>
+				</div>
+				<button type="submit" class="tx__button tx__button--small tx__butt on--hollow js-submit button-margin">Verify</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts
+{
+	<partial name="_ValidationScriptsPartial" />
+}

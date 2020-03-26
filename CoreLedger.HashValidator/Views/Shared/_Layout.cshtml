@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - CoreLedger</title>
+	<link rel="icon" type="image/x-icon" href="~/favicon.png" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" />
+	<link rel="stylesheet" href="~/css/style.css" />
+	<link rel="stylesheet" href="~/css/input.css" />
+</head>
+<body>
+	<div class="container">
+		<div class="tx__logo-container tx__logo-container--profile">
+			<a href="@Url.Action("Index", "Encode")">
+				<img src="~/images/logo-horizontal.png" height="80" />
+			</a>
+			<div class="center-right">
+				<button type="button" class="tx__button tx__button--small tx__button--smaller tx__button--hollow tx__link" onclick="window.location.href = 'https://github.com/CoreLedger-TEOS/CoreLedger.HashValidator'">Get source code</button>
+			</div>
+		</div>
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<link href="~/js/vs/editor/editor.main.css" rel="stylesheet" />
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	<script src="~/js/script.js"></script>
+	@RenderSection("Scripts", required: false)
+</body>
+</html>

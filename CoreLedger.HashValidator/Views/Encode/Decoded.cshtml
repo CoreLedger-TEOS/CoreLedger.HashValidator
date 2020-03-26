@@ -1,0 +1,99 @@
+﻿@model DecodedViewModel
+@{
+	ViewData["Title"] = "Decoded Page";
+}
+
+<div>
+	<div class="container form">
+		<form method="Get">
+			<div class="form-group">
+				@if (Model.IsHashValid)
+				{
+					<div>
+						<label asp-for="DocumentHash" class="display_label_hash"></label>
+						<label class="display_label_hash text-success">is valid</label>
+					</div>
+					<input asp-for="DocumentHash" type="text" class="form-control input-border alert-success valid-hash" readonly>
+				}
+				else
+				{
+					<div>
+						<label asp-for="DocumentHash" class="display_label_hash"></label>
+						<label class="display_label_hash text-danger">is not valid</label>
+					</div>
+					<input asp-for="DocumentHash" type="text" class="form-control input-border alert-danger invalid-hash" readonly>
+				}
+			</div>
+			<div class="form-group">
+				<label asp-for="DocumentCalculatedHash" class="display_label"></label>
+				<input asp-for="DocumentCalculatedHash" type="text" class="form-control alert input-border" readonly>
+			</div>
+			<div class="form-group">
+				<label asp-for="DecodedBase64" class="display_label"></label>
+				<div class="editor-field" id="editorDecodedBase64"></div>
+			</div>
+			<div class="form-group">
+				<label asp-for="HashSource" class="display_label"></label>
+				<div class="editor-field" id="editorHashSource"></div>
+			</div>
+			<div class="form-group text-center">
+				<input type="button" class="tx__button tx__button--small tx__butt on--hollow js-submit button-margin text-center" value="Decode again" onclick="location.href='@Url.Action("Index", "Encode")'" />
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts {
+	<script>var require = { paths: { 'vs': '/js/vs' } };</script>
+	<script type="text/javascript" src="~/js/vs/loader.js"></script>
+	<script type="text/javascript" src="~/js/vs/editor/editor.main.nls.js"></script>
+	<script type="text/javascript" src="~/js/vs/editor/editor.main.js"></script>
+	<script>
+		"use strict";
+		var elementDecodedBase = document.getElementById('editorDecodedBase64');
+		var elementHashSource = document.getElementById('editorHashSource');
+
+		var decodeBaseMessage = @Html.Raw(Json.Serialize(Model.DecodedBase64));
+		var decodeBaseMessageFormatted = JSON.stringify(JSON.parse(decodeBaseMessage), null, 4);
+
+		var sourceHashMessage = @Html.Raw(Json.Serialize(Model.HashSource));
+		var sourceHashMessageFormatted = JSON.stringify(JSON.parse(sourceHashMessage), null, 4);
+
+		elementDecodedBase.style.height = '600px';
+		elementHashSource.style.height = '600px';
+
+		// window.editor is accessible.
+		var editorDecode = null;
+		var editorHash = null;
+		var init = function () {
+			require(['vs/editor/editor.main'], function () {
+
+				editorDecode = monaco.editor.create(elementDecodedBase, {
+					theme: 'vs',
+					model: monaco.editor.createModel(decodeBaseMessageFormatted, "json"),
+					minimap: {
+						enabled: false
+					},
+					readOnly: true,
+					automaticLayout: true,
+				});
+				editorDecode.layout();
+				editorHash = monaco.editor.create(elementHashSource, {
+					theme: 'vs',
+					model: monaco.editor.createModel(sourceHashMessageFormatted, "json"),
+					minimap: {
+						enabled: false
+					},
+					readOnly: true,
+					automaticLayout: true
+				});
+				editorHash.layout();
+			});
+
+			// no point in keeping this around.
+			window.removeEventListener("load", init);
+		};
+
+		window.addEventListener("load", init);
+	</script>
+}
